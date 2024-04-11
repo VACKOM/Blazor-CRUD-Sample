@@ -1,0 +1,97 @@
+﻿@page "/Employees"
+@using EmployeeCRUDBlazor.Data
+@inject EmployeeService employeeservice
+
+<NavLink class="nav-link" href="AddNewEmployee">
+	<span class="oi oi-plus" aria-hidden="true">Add New Employee</span>
+</NavLink>
+
+
+<h3>Employees List</h3>
+
+@if(EmpObj is null)
+{
+	<p><em>Loading ...................!</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					Employee ID
+				</th>
+				<th>
+					Full Name
+				</th>
+				<th>
+					Address
+				</th>
+				<th>City</th>
+				<th>
+					Email Address
+				</th>
+				<th>
+					Contact Number
+				</th>
+				<th>
+					Designation
+				</th>
+				<th>
+					Edit
+				</th>
+				<th>
+					Delete
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var emp in EmpObj)
+			{
+				<tr>
+					<td>
+						@emp.Id
+					</td>
+					<td>
+						@emp.FullName
+					</td>
+					<td>
+						@emp.Address
+					</td>
+					<td>
+						@emp.City
+					</td>
+					<td>
+						@emp.EmailAddress
+					</td>
+					<td>
+						@emp.PhoneNumber
+					</td>
+					<td>
+						@emp.Designation
+					</td>
+					<td>
+						<a class="nav-link btn btn-primary" href="EditEmployee/@emp.Id">
+							<span class="oi oi-pencil"  aria-hidden="true">Edit</span>
+						</a>
+					</td>
+					<td>
+						<a class="nav-link btn btn-danger" href="DeleteEmployee/@emp.Id">
+							<span class="oi oi-trash aria-hidden="true">Delete</span>
+						</a>
+					</td>
+
+
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+@code {
+	List<Employee> EmpObj;
+
+	protected override async Task OnInitializedAsync()
+	{
+		EmpObj = await Task.Run(() => employeeservice.GetAllEmployees());
+	}
+}
